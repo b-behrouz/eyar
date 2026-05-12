@@ -119,7 +119,7 @@ def admin_update_shop(shop_id: int, shop: ShopUpdate, username: str = Depends(ve
     if not existing:
         conn.close()
         raise HTTPException(404, "طلافروشی یافت نشد")
-    fields = {k: v for k, v in shop.dict().items() if v is not None}
+    fields = {k: v for k, v in shop.model_dump().items() if v is not None}
     if fields:
         set_clause = ", ".join(f"{k}=?" for k in fields)
         conn.execute(f"UPDATE shops SET {set_clause} WHERE id=?", list(fields.values()) + [shop_id])
